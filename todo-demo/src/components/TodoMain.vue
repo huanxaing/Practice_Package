@@ -1,28 +1,59 @@
 <template>
-  <ul class="todo-list">
-    <!-- 2.2 循环任务-关联选中状态-铺设数据 -->
-    <!-- completed: 完成的类名 -->
-    <li :class="{completed: obj.isDone}" v-for="obj in arr" :key='obj.id'>
-      <div class="view">
-        <input class="toggle" type="checkbox" v-model="obj.isDone"/>
-        <label>{{ obj.name }}</label>
+<div >
+      <div class="sa" :key="item.id" v-for="item in $store.getters.qh">
+        <input class="toggle" :checked='item.done' type="checkbox" @change="sd1(item.id)"/>
+        <label>{{item.info}}</label>
         <!-- 4.0 注册点击事件 -->
-        <button class="destroy" @click="delFn(obj.id)"></button>
+        <button class="destroy" @click="del(item.id)">删除</button>
       </div>
-    </li>
-  </ul>
+</div>
+ 
 </template>
 
 <script>
 // 4. 目标: 删除list里数据
 export default {
-  // 2.1 定义props
-  props: ['arr'],
-  methods: {
-    delFn(id){
-      // 4.1 子传父
-      this.$emit('del', id)
-    }
+ data(){
+   return{
+     
+   }
+ },
+ methods:{
+  sd1(id){
+    this.$store.state.list[id].done==true?this.$store.state.list[id].done=false:this.$store.state.list[id].done=true
+    console.log(this.$store.state.list);
+  },
+  del(id){
+    
+    this.$store.commit('de')
+    console.log(this.$store.state.list);
+    this.$store.state.list.splice(id,1)
   }
+ },
+ created(){
+ console.log(this.$store.getters.qh);
+ },
+ computed(){
+  //  ...MapGetters(['qh'])
+ }
 }
 </script>
+<style scoped>
+.sa{
+  height: 40px;
+}
+.sa input{
+  height: 15px;
+  margin-left: 10px;
+}
+.sa label{
+  font-size: 25px;
+  margin-left: 20px;
+}
+.sa button{
+  position: absolute;
+  right: 10px;
+  font-size: 15px;
+  line-height: 40px;
+}
+</style>
